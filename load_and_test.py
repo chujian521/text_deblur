@@ -41,22 +41,22 @@ if __name__ == "__main__":
         flag = True
         image_id = '{0:07d}'.format(name)
         orig_image_path = "./data/%s_orig.png" % image_id
-        blur_image_path = "./data/%s_blur.png" % image_id
-        test_network(blur_image_path, network)
+        deblur_image_path = "./data/%s_deblur.png" % image_id
+        test_network(deblur_image_path, network)
         ocr_orig = reader.readtext(orig_image_path)[0][1]
         try:
-            ocr_blur = reader.readtext(blur_image_path)[0][1]
-            #ocr_deblur = reader.readtext('./test/deblur0.png')[0][1]
+            #ocr_blur = reader.readtext(deblur_image_path)[0][1]
+            ocr_deblur = reader.readtext('./test/deblur0.png')[0][1]
         except Exception as e:
             flag = False
             print(e)
             
         if(flag):
-            correct_ratio = difflib.SequenceMatcher(None, ocr_orig, ocr_blur).quick_ratio()
+            correct_ratio = difflib.SequenceMatcher(None, ocr_orig, ocr_deblur).quick_ratio()
         else:
             correct_ratio = 0.0
             ocr_blur = " "
-        print(str(ocr_orig)+" " + str(ocr_blur)+ " " + str(correct_ratio))
+        print(str(ocr_orig)+" " + str(ocr_deblur)+ " " + str(correct_ratio))
         ratio = ratio + correct_ratio
         
     print("test finished! avrg correct ratio is : "+str(ratio/999.0))
